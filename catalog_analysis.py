@@ -1,8 +1,24 @@
+
+import math
+from typing import List, Dict, Union
+
 movies = [
-    {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
-     "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
-    {"title": "Kitchen Stories", "year": 2019, "genres": {"comedy", "drama"},
-     "rating": 7.1, "duration_min": 98, "actors": ["A. Novak", "M. Ferguson"]},
+    {
+        "title": "The Dune Chronicles",
+        "year": 2021,
+        "genres": {"sci-fi", "drama"},
+        "rating": 8.6,
+        "duration_min": 155,
+        "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]
+    },
+    {
+        "title": "Kitchen Stories",
+        "year": 2019,
+        "genres": {"comedy", "drama"},
+        "rating": 7.1,
+        "duration_min": 98,
+        "actors": ["A. Novak", "M. Ferguson"]
+    },
     {"title": "silent hours", "year": 2016, "genres": {"thriller", "drama"},
      "rating": 6.4, "duration_min": 112, "actors": ["J. Bloom", "K. Lee"]},
     {"title": "Comet Racers", "year": 2023, "genres": {"sci-fi", "action"},
@@ -21,8 +37,48 @@ movies = [
      "rating": 7.3, "duration_min": 129, "actors": ["P. Diaz", "T. Chalamet"]},
 ]
 
+def average_rating(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]]
+            ]
+        ]
+) -> float:
+    """
+    Returns the average rating of movies catalog.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+
+    Returns:
+        float: the catalog average value.
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    if not movies:
+        return 0.0
+    try:
+        return round(
+            sum([movie["rating"] for movie in movies]) / len(movies),
+            1
+        )
+    except KeyError as e:
+        raise KeyError("Can't find \"rating\" field in movie object") from e
+
+
+
+
+
 def main():
-    print("Hello from catalog_analysis")
+    ar = average_rating(movies=movies)
+    print(ar)
 
 
 if __name__ == "__main__":

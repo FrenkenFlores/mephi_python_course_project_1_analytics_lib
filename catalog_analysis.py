@@ -451,6 +451,42 @@ def count_by_genre(
     return count_dict
 
 
+def actor_filmography(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ]
+) -> Dict[str, List[str]]:
+    """
+    Returns a dict with the actors and there movies.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+
+    Returns:
+        Dict[str, List[str]]: dict with the actors and movies
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    actors_movies = {}
+    for movie in movies:
+        try:
+            for actor in movie["actors"]:
+                actors_movies[actor] = actors_movies.get(actor, []) + [movie["title"]]
+        except KeyError as e:
+            raise KeyError("Couldn't find keys: \"actors\", \"title\"") from e
+    return actors_movies
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -478,6 +514,7 @@ def main():
     print(titles_sorted_by_rating(MOVIES))
     print(top_n_by_rating(MOVIES))
     print(count_by_genre(MOVIES))
+    print(actor_filmography(MOVIES))
 
 
 if __name__ == "__main__":

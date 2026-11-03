@@ -654,7 +654,63 @@ def iter_high_rated(
         yield movie
 
 
-def main():
+def build_report(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ]
+):
+    """
+    Print movies catalog report.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+    """
+    template = (
+        "ОТЧеТ ПО КАТАЛОГУ\n"
+        "Средний рейтинг: {avg_rating}\n"
+        "Средний возраст фильмов: {avg_age} лет\n\n"
+        "Топ-3 фильма:\n"
+        "{top_3_films}"
+        "\n\nФильмов по жанрам:\n"
+        "{movies_count_by_genres}"
+        "\n\nВсе жанры каталога: {all_genres}"
+    )
+    print(
+        template.format(
+            avg_rating=average_rating(movies),
+            avg_age=catalog_age_stats(movies)[-1],
+            top_3_films="\n".join(
+                "  " + format_report_line(movie) for movie in movies if movie["title"] in
+                set(title for title, _ in top_n_by_rating(movies, 3))
+            ),
+            movies_count_by_genres="\n".join(
+                sorted(
+                    [
+                        "  " + f"{genre} — {count}"
+                        for genre, count in count_by_genre(movies).items()
+                    ],
+                    key=lambda x: int(x[x.rfind("—") + 1:]),
+                    reverse=True
+                )
+            ),
+            all_genres=", ".join(list(all_genres(movies)))
+        )
+    )
+
+
+def test():
+    """
+    A function for local testing.
+    """
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
     print(duration_in_hours(5))
@@ -694,8 +750,8 @@ def main():
     print(genres_only_in_one(MOVIES[5:6], MOVIES[:5]))
     for movie in iter_high_rated(MOVIES):
         print(format_report_line(movie))
-
+    print(sum((m["duration_min"] for m in MOVIES if m["rating"] > 7)))
 
 
 if __name__ == "__main__":
-    main()
+    build_report(MOVIES)

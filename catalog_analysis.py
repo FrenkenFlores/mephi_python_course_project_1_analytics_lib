@@ -1,6 +1,6 @@
 
 import math
-from typing import List, Dict, Union, Literal, Iterator
+from typing import Dict, Iterator, List, Literal, Union
 
 MOVIES = [
     {
@@ -682,14 +682,15 @@ def build_report(
         "{top_3_films}"
         "\n\nФильмов по жанрам:\n"
         "{movies_count_by_genres}"
-        "\n\nВсе жанры каталога: {all_genres}"
+        "\n\nВсе жанры каталога: {all_genres}\n"
     )
     print(
         template.format(
             avg_rating=average_rating(movies),
             avg_age=catalog_age_stats(movies)[-1],
             top_3_films="\n".join(
-                "  " + format_report_line(movie) for movie in movies if movie["title"] in
+                "  " + format_report_line(movie)
+                for movie in movies if movie["title"] in
                 set(title for title, _ in top_n_by_rating(movies, 3))
             ),
             movies_count_by_genres="\n".join(

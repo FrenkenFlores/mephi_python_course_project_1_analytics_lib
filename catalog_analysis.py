@@ -334,7 +334,8 @@ def format_report_line(
         )
     except KeyError as e:
         raise KeyError(
-            "Could not find needed keys: title, year, rating, duration_min, genres"
+            "Could not find needed keys:"
+            "\"title\", \"year\", \"rating\", \"duration_min\", \"genres\""
         ) from e
     return report
 
@@ -447,7 +448,7 @@ def count_by_genre(
             for genre in movie["genres"]:
                 count_dict[genre] = count_dict.get(genre, 0) + 1
         except KeyError as e:
-            raise KeyError("Couldn't find key: genres") from e
+            raise KeyError("Couldn't find key: \"genres\"") from e
     return count_dict
 
 
@@ -487,6 +488,42 @@ def actor_filmography(
     return actors_movies
 
 
+def all_genres(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ]
+) -> set[str]:
+    """
+    Returns a set with all genres.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+
+    Returns:
+        set[str]: a set with all genres
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    genres_set = set()
+    for movie in movies:
+        try:
+            for genre in movie["genres"]:
+                genres_set.add(genre)
+        except KeyError as e:
+            raise KeyError("Couldn't find key: \"genres\"") from e
+    return genres_set
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -515,6 +552,14 @@ def main():
     print(top_n_by_rating(MOVIES))
     print(count_by_genre(MOVIES))
     print(actor_filmography(MOVIES))
+
+    d = {
+        movie["title"]: movie["rating"]
+        for movie in MOVIES
+        if movie["rating"] > average_rating(movies=MOVIES)
+    }
+    print(d)
+    print(all_genres(MOVIES))
 
 
 if __name__ == "__main__":

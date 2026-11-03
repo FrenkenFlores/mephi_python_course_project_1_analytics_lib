@@ -568,24 +568,28 @@ def common_actors(
 
 
 def genres_only_in_one(
-    movies_a: Dict[
-        str,
-        Union[
+    movies_a: List[
+        Dict[
             str,
-            int,
-            float,
-            Dict[str, str],
-            List[str]
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
         ]
     ],
-    movies_b: Dict[
-        str,
-        Union[
+    movies_b: List[
+        Dict[
             str,
-            int,
-            float,
-            Dict[str, str],
-            List[str]
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
         ]
     ]
 ) -> set[str]:
@@ -593,18 +597,22 @@ def genres_only_in_one(
     Returns a set of genres that are only present in the first set.
 
     Args:
-        movie_a(Dict): the first movie object
-        movie_b(Dict): the second movie object
+        movies_a(Dict): the first list of movie objects
+        movies_b(Dict): the second list of movie objects
 
     Returns:
-        set[str]: a set with genres that are present only in the first movie
+        set[str]: a set with genres that are present only in the first movies list
 
     Raises:
         KeyError: if the movie dict object has invalid format
     """
+    movie_a_actors_set = set()
+    movie_b_actors_set = set()
     try:
-        movie_a_actors_set = set(movies_a["genres"])
-        movie_b_actors_set = set(movies_b["genres"])
+        for movie in movies_a:
+            movie_a_actors_set.update(set(movie["genres"]))
+        for movie in movies_b:
+            movie_b_actors_set.update(set(movie["genres"]))
     except KeyError as e:
         raise KeyError("Couldn't find key: \"genres\"") from e
     return movie_a_actors_set - movie_b_actors_set
@@ -646,8 +654,8 @@ def main():
     }
     print(d)
     print(all_genres(MOVIES))
-    print(common_actors(MOVIES[0], MOVIES[5]))
-    print(genres_only_in_one(MOVIES[0], MOVIES[1]))
+    print(common_actors(MOVIES[0], MOVIES[3]))
+    print(genres_only_in_one(MOVIES[5:6], MOVIES[:5]))
 
 
 if __name__ == "__main__":

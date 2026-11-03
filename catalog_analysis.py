@@ -374,6 +374,45 @@ def titles_sorted_by_rating(
     return titles
 
 
+def top_n_by_rating(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ],
+    n: int = 3
+) -> List[tuple[str, str]]:
+    """
+    Returns a list of top n titles and ratings for movies catalog.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+        n(int): number of elements
+
+    Returns:
+        List[tuple(str, str)]: list of titles and ratings
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    try:
+        titles = [
+            (
+                movie["title"],
+                movie["rating"]
+            )
+            for movie in sorted(movies, key=lambda x: x["rating"], reverse=True)
+        ][:n]
+    except KeyError as e:
+        raise KeyError("Couldn't find keys: \"title\", \"rating\"") from e
+    return titles
 
 
 def main():
@@ -401,6 +440,7 @@ def main():
     print(make_slug(MOVIES[0]["title"]))
     print(format_report_line(MOVIES[0]))
     print(titles_sorted_by_rating(MOVIES))
+    print(top_n_by_rating(MOVIES))
 
 
 if __name__ == "__main__":

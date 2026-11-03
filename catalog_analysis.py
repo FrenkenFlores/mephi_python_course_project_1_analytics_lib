@@ -415,6 +415,42 @@ def top_n_by_rating(
     return titles
 
 
+def count_by_genre(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ]
+) -> Dict[str, int]:
+    """
+    Returns a counter dict that counts how many movies in each genre.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+
+    Returns:
+        Dict[str, int]: dict with the number of movies in every genre
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    count_dict = {}
+    for movie in movies:
+        try:
+            for genre in movie["genres"]:
+                count_dict[genre] = count_dict.get(genre, 0) + 1
+        except KeyError as e:
+            raise KeyError("Couldn't find key: genres") from e
+    return count_dict
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -441,6 +477,7 @@ def main():
     print(format_report_line(MOVIES[0]))
     print(titles_sorted_by_rating(MOVIES))
     print(top_n_by_rating(MOVIES))
+    print(count_by_genre(MOVIES))
 
 
 if __name__ == "__main__":

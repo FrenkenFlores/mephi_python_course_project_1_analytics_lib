@@ -165,9 +165,33 @@ def catalog_age_stats(
     )
 
 
+
+def duration_in_hours(
+    minutes: int
+) -> str:
+    """
+    Converts minuts into format: HHч MMм.
+
+    Args:
+        minutes(int): minutres in int format that will be converted into str
+
+    Returns:
+        str: the formated time.
+
+    Raises:
+        ValueError: if negative minutes provided
+    """
+    if minutes < 0:
+        raise ValueError("Minutes can't be negative")
+    hours = minutes // 60
+    minutes_left = minutes % 60
+    return f"{hours}ч {minutes_left}м"
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
+    print(duration_in_hours(-5))
 
 
 

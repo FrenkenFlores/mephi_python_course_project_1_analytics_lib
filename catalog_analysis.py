@@ -208,12 +208,34 @@ def rating_tier(
         return "средне" if rating >= 5 else "слабо"
 
 
+def decade_label(
+    year: int
+) -> Literal["новые", "недавние", "старые"]:
+    """
+    Returns the label that represents the movie age.
+
+    Args:
+        year(int): the movie year
+    
+    Returns:
+        Literal: the age label
+    """
+    match year:
+        case y if y > 2020:
+            return "новые"
+        case y if y > 2014:
+            return "недавние"
+        case y if y < 2015:
+            return "старые"
+
 
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
     print(duration_in_hours(5))
     print(rating_tier(7))
+    print(decade_label(2023))
+
 
 
 if __name__ == "__main__":

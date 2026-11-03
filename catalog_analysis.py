@@ -314,6 +314,18 @@ def format_report_line(
         ]
     ]
 ) -> str:
+    """
+    Return movie report.
+
+    Args:
+        movie(Dict): list of catalog movie objects
+
+    Returns:
+        str: formated report
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
     try:
         report = (
             f'"{movie["title"]}" ({movie["year"]}) — '
@@ -325,6 +337,43 @@ def format_report_line(
             "Could not find needed keys: title, year, rating, duration_min, genres"
         ) from e
     return report
+
+
+def titles_sorted_by_rating(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ]
+) -> List[str]:
+    """
+    Returns the titles for movies catalog that is sorted by rating
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+
+    Returns:
+        List[str]: list of titles
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    try:
+        titles = [
+            movie["title"] for movie in sorted(movies, key=lambda x: x["rating"])
+        ]
+    except KeyError as e:
+        raise KeyError("Couldn't find keys: \"title\", \"rating\"") from e
+    return titles
+
+
 
 
 def main():
@@ -351,6 +400,7 @@ def main():
     print(normalize_title(MOVIES[2]["title"]))
     print(make_slug(MOVIES[0]["title"]))
     print(format_report_line(MOVIES[0]))
+    print(titles_sorted_by_rating(MOVIES))
 
 
 if __name__ == "__main__":

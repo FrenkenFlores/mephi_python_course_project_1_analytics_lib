@@ -1,6 +1,6 @@
 
 import math
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Literal
 
 MOVIES = [
     {
@@ -188,11 +188,32 @@ def duration_in_hours(
     return f"{hours}ч {minutes_left}м"
 
 
+def rating_tier(
+    rating: float
+) -> Literal["шедевр", "хорошо", "средне", "слабо"]:
+    """
+    Return the rating label
+
+    Args:
+        rating(float): the movie rating
+
+    Returns:
+        Literal: the rating label
+    """
+    if rating >= 9:
+        return "шедевр"
+    elif rating >= 7:
+        return "хорошо"
+    else:
+        return "средне" if rating >= 5 else "слабо"
+
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
     print(duration_in_hours(5))
-
+    print(rating_tier(7))
 
 
 if __name__ == "__main__":

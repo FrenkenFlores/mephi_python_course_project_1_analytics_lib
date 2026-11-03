@@ -106,7 +106,7 @@ def average_rating(
         movies(List[Dict]): list of catalog movie objects
 
     Returns:
-        float: the catalog average value.
+        float: the catalog average value
 
     Raises:
         KeyError: if the movie dict object has invalid format
@@ -176,7 +176,7 @@ def duration_in_hours(
         minutes(int): minutres in int format that will be converted into str
 
     Returns:
-        str: the formated time.
+        str: the formated time
 
     Raises:
         ValueError: if negative minutes provided

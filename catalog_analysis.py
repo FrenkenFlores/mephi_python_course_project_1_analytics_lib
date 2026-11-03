@@ -299,7 +299,32 @@ def make_slug(
     Returns:
         str: the created slug based on the title
     """
-    return '-'.join(title.lower().split())
+    return title.lower().replace(' ', '-')
+
+
+def format_report_line(
+    movie: Dict[
+        str,
+        Union[
+            str,
+            int,
+            float,
+            Dict[str, str],
+            List[str]
+        ]
+    ]
+) -> str:
+    try:
+        report = (
+            f'"{movie["title"]}" ({movie["year"]}) — '
+            f'{movie["rating"]}/10, {duration_in_hours(movie["duration_min"])}, '
+            f'жанры: {', '.join(sorted(movie["genres"]))}'
+        )
+    except KeyError as e:
+        raise KeyError(
+            "Could not find needed keys: title, year, rating, duration_min, genres"
+        ) from e
+    return report
 
 
 def main():
@@ -325,6 +350,7 @@ def main():
     print(count_long_movies(MOVIES))
     print(normalize_title(MOVIES[2]["title"]))
     print(make_slug(MOVIES[0]["title"]))
+    print(format_report_line(MOVIES[0]))
 
 
 if __name__ == "__main__":

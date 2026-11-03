@@ -138,15 +138,15 @@ def catalog_age_stats(
     current_year: int = 2026
 ) -> tuple[int, int, int]:
     """
-    Returns the year of the oldest, newest and the average year of movies in catalog
+    Returns the age of the oldest, newest and the average age of movies in catalog
     in relation to the current year.
 
     Args:
         movies(List[Dict]): list of catalog movie objects
-        current_year(int): the current year that will be used as pivot
+        current_year(int): the current year that will be used to calculate the age
 
     Returns:
-        tuple: the oldest, newest and average year.
+        tuple: the oldest, newest and average age
 
     Raises:
         KeyError: if the movie dict object has invalid format
@@ -154,14 +154,14 @@ def catalog_age_stats(
     if not movies:
         return (0, 0, 0)
 
-    years = [movie["year"] for movie in movies]
-    min_year = min(years)
-    max_year = max(years)
-    avg_year = math.ceil(sum(years)/len(years))
+    ages = [abs(current_year - movie["year"]) for movie in movies]
+    min_age = min(ages)
+    max_age = max(ages)
+    avg_age = math.ceil(sum(ages)/len(ages))
     return (
-        min_year,
-        max_year,
-        avg_year
+        min_age,
+        max_age,
+        avg_age
     )
 
 
@@ -191,7 +191,7 @@ def duration_in_hours(
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
-    print(duration_in_hours(-5))
+    print(duration_in_hours(5))
 
 
 

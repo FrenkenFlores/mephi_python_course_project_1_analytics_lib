@@ -389,7 +389,7 @@ def top_n_by_rating(
         ]
     ],
     n: int = 3
-) -> List[tuple[str, str]]:
+) -> List[tuple[str, float]]:
     """
     Returns a list of top n titles and ratings for movies catalog.
 
@@ -398,7 +398,7 @@ def top_n_by_rating(
         n(int): number of elements
 
     Returns:
-        List[tuple(str, str)]: list of titles and ratings
+        List[tuple(str, float)]: list of titles and ratings
 
     Raises:
         KeyError: if the movie dict object has invalid format

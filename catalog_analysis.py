@@ -154,7 +154,10 @@ def catalog_age_stats(
     if not movies:
         return (0, 0, 0)
 
-    ages = [abs(current_year - movie["year"]) for movie in movies]
+    try:
+        ages = [abs(current_year - movie["year"]) for movie in movies]
+    except KeyError as e:
+        raise KeyError("Can't find key \"year\"") from e
     min_age = min(ages)
     max_age = max(ages)
     avg_age = math.ceil(sum(ages)/len(ages))

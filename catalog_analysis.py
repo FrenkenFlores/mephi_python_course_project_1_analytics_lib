@@ -95,9 +95,10 @@ def average_rating(
                 int,
                 float,
                 Dict[str, str],
-                List[str]]
+                List[str]
             ]
         ]
+    ]
 ) -> float:
     """
     Returns the average rating of movies catalog.
@@ -122,7 +123,6 @@ def average_rating(
         raise KeyError("Can't find \"rating\" field in movie object") from e
 
 
-
 def catalog_age_stats(
     movies: List[
         Dict[
@@ -132,9 +132,10 @@ def catalog_age_stats(
                 int,
                 float,
                 Dict[str, str],
-                List[str]]
+                List[str]
             ]
-        ],
+        ]
+    ],
     current_year: int = 2026
 ) -> tuple[int, int, int]:
     """
@@ -166,7 +167,6 @@ def catalog_age_stats(
         max_age,
         avg_age
     )
-
 
 
 def duration_in_hours(
@@ -273,7 +273,7 @@ def normalize_title(
     title: str
 ) -> str:
     """
-    Reformat title into "Title Case" format
+    Reformat title into "Title Case" format.
 
     Args:
         title(str): the movie title
@@ -354,7 +354,7 @@ def titles_sorted_by_rating(
     ]
 ) -> List[str]:
     """
-    Returns the titles for movies catalog that is sorted by rating
+    Returns the titles for movies catalog that is sorted by rating.
 
     Args:
         movies(List[Dict]): list of catalog movie objects

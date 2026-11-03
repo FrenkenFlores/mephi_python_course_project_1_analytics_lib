@@ -123,10 +123,51 @@ def average_rating(
 
 
 
+def catalog_age_stats(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]]
+            ]
+        ],
+    current_year: int = 2026
+) -> tuple[int, int, int]:
+    """
+    Returns the year of the oldest, newest and the average year of movies in catalog
+    in relation to the current year.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+        current_year(int): the current year that will be used as pivot
+
+    Returns:
+        tuple: the oldest, newest and average year.
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    if not movies:
+        return (0, 0, 0)
+
+    years = [movie["year"] for movie in movies]
+    min_year = min(years)
+    max_year = max(years)
+    avg_year = math.ceil(sum(years)/len(years))
+    return (
+        min_year,
+        max_year,
+        avg_year
+    )
 
 
 def main():
     print(average_rating(movies=MOVIES))
+    print(catalog_age_stats(movies=MOVIES))
 
 
 

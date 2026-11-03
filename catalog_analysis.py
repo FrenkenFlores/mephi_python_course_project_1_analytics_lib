@@ -269,6 +269,24 @@ def count_long_movies(
     return count
 
 
+def normalize_title(
+    title: str
+) -> str:
+    """
+    Reformat title into "Title Case" format
+
+    Args:
+        title(str): the movie title
+    
+    Returns:
+        str: the formated title
+    """
+    fomrated_words = []
+    for word in title.split():
+        fomrated_words.append(word[0].upper() + word[1:])
+    return " ".join(fomrated_words)
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -290,6 +308,7 @@ def main():
     else:
         print("Шедевров не найдено")
     print(count_long_movies(MOVIES))
+    print(normalize_title(MOVIES[2]["title"]))
 
 
 if __name__ == "__main__":

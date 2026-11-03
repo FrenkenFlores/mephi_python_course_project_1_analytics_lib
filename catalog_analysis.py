@@ -287,6 +287,21 @@ def normalize_title(
     return " ".join(fomrated_words)
 
 
+def make_slug(
+    title: str
+) -> str:
+    """
+    Return a slug for the given title in format "some-value".
+
+    Args:
+        title(str): the movie title
+    
+    Returns:
+        str: the created slug based on the title
+    """
+    return '-'.join(title.lower().split())
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -309,6 +324,7 @@ def main():
         print("Шедевров не найдено")
     print(count_long_movies(MOVIES))
     print(normalize_title(MOVIES[2]["title"]))
+    print(make_slug(MOVIES[0]["title"]))
 
 
 if __name__ == "__main__":

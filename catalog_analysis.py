@@ -692,10 +692,9 @@ def main():
     print(all_genres(MOVIES))
     print(common_actors(MOVIES[0], MOVIES[3]))
     print(genres_only_in_one(MOVIES[5:6], MOVIES[:5]))
-    g = iter_high_rated(MOVIES)
-    print(next(g))
-    print(next(g))
-    print(next(g))
+    for movie in iter_high_rated(MOVIES):
+        print(format_report_line(movie))
+
 
 
 if __name__ == "__main__":

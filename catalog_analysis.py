@@ -524,6 +524,49 @@ def all_genres(
     return genres_set
 
 
+def common_actors(
+    movie1: Dict[
+        str,
+        Union[
+            str,
+            int,
+            float,
+            Dict[str, str],
+            List[str]
+        ]
+    ],
+    movie2: Dict[
+        str,
+        Union[
+            str,
+            int,
+            float,
+            Dict[str, str],
+            List[str]
+        ]
+    ]
+) -> set[str]:
+    """
+    Returns a set of actors that took role in both movies.
+
+    Args:
+        movie1(Dict): the first movie object
+        movie2(Dict): the second movie object
+
+    Returns:
+        set[str]: a set with actors who took role in both movies
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    try:
+        movie1_actors_set = set(movie1["actors"])
+        movie2_actors_set = set(movie2["actors"])
+    except KeyError as e:
+        raise KeyError("Couldn't find key: \"actors\"") from e
+    return movie1_actors_set & movie2_actors_set
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -560,6 +603,7 @@ def main():
     }
     print(d)
     print(all_genres(MOVIES))
+    print(common_actors(MOVIES[0], MOVIES[5]))
 
 
 if __name__ == "__main__":

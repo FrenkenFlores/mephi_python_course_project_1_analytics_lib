@@ -517,8 +517,7 @@ def all_genres(
     genres_set = set()
     for movie in movies:
         try:
-            for genre in movie["genres"]:
-                genres_set.add(genre)
+            genres_set.update(set(movie["genres"]))
         except KeyError as e:
             raise KeyError("Couldn't find key: \"genres\"") from e
     return genres_set

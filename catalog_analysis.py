@@ -1,6 +1,6 @@
 
 import math
-from typing import List, Dict, Union, Literal
+from typing import List, Dict, Union, Literal, Iterator
 
 MOVIES = [
     {
@@ -617,6 +617,43 @@ def genres_only_in_one(
     return movie_a_actors_set - movie_b_actors_set
 
 
+def iter_high_rated(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ],
+    min_rating: float = 8.0
+) -> Iterator[Dict]:
+    """
+    Returns a generator that yields a movie which rating is not below min_rating.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+        min_rating(float): the threshold that is used to filter yielded movie objects
+
+    Returns:
+        Iterator[Dict]: an iterator the returns a movie each time next() is called
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    for movie in movies:
+        try:
+            if movie["rating"] < min_rating:
+                continue
+        except KeyError as e:
+            raise KeyError("Couldn't find key: \"rating\"") from e
+        yield movie
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -655,6 +692,10 @@ def main():
     print(all_genres(MOVIES))
     print(common_actors(MOVIES[0], MOVIES[3]))
     print(genres_only_in_one(MOVIES[5:6], MOVIES[:5]))
+    g = iter_high_rated(MOVIES)
+    print(next(g))
+    print(next(g))
+    print(next(g))
 
 
 if __name__ == "__main__":

@@ -229,6 +229,43 @@ def decade_label(
             return "старые"
 
 
+def count_long_movies(
+    movies: List[
+        Dict[
+            str,
+            Union[
+                str,
+                int,
+                float,
+                Dict[str, str],
+                List[str]
+            ]
+        ]
+    ],
+    threshold: int = 120
+) -> int:
+    """
+    Returns the number of movies with duration bigger then threshold.
+
+    Args:
+        movies(List[Dict]): list of catalog movie objects
+
+    Returns:
+        int: the number of filtered movies
+
+    Raises:
+        KeyError: if the movie dict object has invalid format
+    """
+    count = 0
+    try:
+        for movie in movies:
+            if movie["duration_min"] > threshold:
+                count += 1
+    except KeyError as e:
+        raise KeyError("Key \"duration_min\" is not found") from e
+    return count
+
+
 def main():
     print(average_rating(movies=MOVIES))
     print(catalog_age_stats(movies=MOVIES))
@@ -236,6 +273,20 @@ def main():
     print(rating_tier(7))
     print(decade_label(2023))
 
+    for movie in MOVIES:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+    i = len(MOVIES) - 1
+    while i > 0:
+        if MOVIES[i]["rating"] > 9.0:
+            print(MOVIES[i]["title"])
+            break
+        i -= 1
+    else:
+        print("Шедевров не найдено")
+    print(count_long_movies(MOVIES))
 
 
 if __name__ == "__main__":
